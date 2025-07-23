@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f8f9fa;
+}
+
+/* Arka plan canvas */
+#bgCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(to bottom, #e6f0ff, #ffffff);
+}
+
+/* Fade-in animasyonu */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  will-change: opacity, transform;
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+.button-hover:hover {
+  background-color: #0046cc !important;
+  box-shadow: 0 4px 10px rgba(0, 87, 255, 0.3);
+  transition: 0.3s;
+}
+
+.text-primary {
+  color: #0057ff !important;
+}
+
+.card-appear {
+  opacity: 0;
+  transform: scale(0.95);
+  animation: popUp 0.6s ease-out forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes popUp {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+

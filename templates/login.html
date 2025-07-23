@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Giriş Yap - Sophira</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+</head>
+<body class="bg-light d-flex justify-content-center align-items-center vh-100 fade-in">
+  
+  <!-- Arka plan canvas -->
+  <canvas id="bgCanvas"></canvas>
+
+  <!-- Giriş kartı -->
+  <div class="card p-4 shadow text-center card-appear" style="width: 400px; z-index: 1;">
+    <img src="{{ url_for('static', filename='logo.png') }}" alt="Sophira" height="50" class="mb-3">
+    {% if message %}
+      <div class="alert alert-danger">{{ message }}</div>
+    {% endif %}
+    <h3 class="text-primary mb-3">Giriş Yap</h3>
+    <form method="post">
+      <input type="text" name="username" class="form-control mb-3" placeholder="Kullanıcı Adı" required>
+      <input type="password" name="password" class="form-control mb-3" placeholder="Şifre" required>
+      <button type="submit" class="btn btn-primary w-100 button-hover">Giriş Yap</button>
+    </form>
+    <p class="text-center mt-3">Hesabın yok mu? <a href="/register">Kayıt Ol</a></p>
+  </div>
+
+  <!-- Arka plan animasyonu -->
+  <script>
+    const canvas = document.getElementById("bgCanvas");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const particles = [];
+    const particleCount = 60;
+    const maxDistance = 120;
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 2 + 1.5,
+        dx: (Math.random() - 0.5) * 0.8,
+        dy: (Math.random() - 0.5) * 0.8
+      });
+    }
+
+    function drawLine(p1, p2, dist) {
+      ctx.beginPath();
+      ctx.strokeStyle = `rgba(0, 87, 255, ${1 - dist / maxDistance})`;
+      ctx.lineWidth = 1;
+      ctx.moveTo(p1.x, p1.y);
+      ctx.lineTo(p2.x, p2.y);
+      ctx.stroke();
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (let p of particles) {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = "#0057ffcc"; // koyu mavi
+        ctx.fill();
+
+        p.x += p.dx;
+        p.y += p.dy;
+
+        if (p.x > canvas.width || p.x < 0) p.dx *= -1;
+        if (p.y > canvas.height || p.y < 0) p.dy *= -1;
+      }
+
+      for (let i = 0; i < particleCount; i++) {
+        for (let j = i + 1; j < particleCount; j++) {
+          const p1 = particles[i];
+          const p2 = particles[j];
+          const dx = p1.x - p2.x;
+          const dy = p1.y - p2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < maxDistance) {
+            drawLine(p1, p2, dist);
+          }
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  </script>
+</body>
+</html>
